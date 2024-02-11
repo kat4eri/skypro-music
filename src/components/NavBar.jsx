@@ -9,7 +9,7 @@ function NavBar() {
   return (
     <nav className="main__nav nav">
       <div className="nav__logo logo">
-        <img className="logo__image" src="/img/logo.png" alt="logo" />
+        <img className="logo__image" src="/img/logo_modal.png" alt="logo" />
       </div>
       <div className="nav__burger burger burger-click" onClick={toggleVisible}>
         {visible}

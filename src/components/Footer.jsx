@@ -6,7 +6,7 @@ function Footer() {
     <footer className="footer">
       <div className="footer__content">
         <div className="footer__logo">
-          <img src="logo.png" alt="YourLogo" />
+          <img src="/img/logo.png" alt="YourLogo" />
           <p>&copy; 2023 Your Company</p>
         </div>
         <div className="footer__links">

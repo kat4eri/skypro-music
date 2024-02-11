@@ -1,12 +1,10 @@
 import React from "react";
-import "./App.css";
-
 import NavBar from "./components/NavBar.jsx";
 import CenterBlock from "./components/CenterBlock";
 import Sidebar from "./components/Sidebar";
 import PlayerBar from "./components/PlayerBar";
 import Footer from "./components/Footer";
-
+import "./App.css";
 
 function App() {
   return (
@@ -16,7 +14,6 @@ function App() {
           <main className="main">
             <NavBar />
             <CenterBlock />
-           
             <Sidebar />
           </main>
           <PlayerBar />
