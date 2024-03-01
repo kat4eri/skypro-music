@@ -1,46 +1,52 @@
-import { Routes, Route } from "react-router-dom";
-import { Main } from "./pages/mainFolder/main";
-import { Favourites } from "./pages/Favourites/Favourites";
-import { Category } from "./pages/Category/Category";
-import { NotFound } from "./pages/NotFound/NotFound";
+import { Routes, Route } from 'react-router-dom'
+// import { UserProvider } from './UserContext';
+import { MyPlaylist } from './pages/favorites'
+import { Main } from './pages/main'
+import { NotFound } from './pages/NotFound'
+import { PlaylistPages } from './pages/category'
+import { ProtectedRoute } from './components/protected-route'
+import { useEffect } from 'react'
+import { Login } from './pages/login'
+import { Register } from './pages/register'
+import { useUserContext } from './UserContext';
 
-import { ProtectedRoute } from "./components/protected-route/protected";
-import { useState } from "react";
 
-import AuthPage from "./pages/authPage/authPage";
-import { AuthProvider } from "./pages/authContext/AuthContext";
+export const AppRoutes = ({ tracks, showSkeleton, error }) => {
 
-import { ThemeContext, themes } from "./pages/Theme/ThemeContext";
-import { PageLayout } from "./components/pageLayot/pageLayot";
+  const { user, handleLogin, handleLogout } = useUserContext();
 
-export const AppRoutes = () => {
-  const [currentTheme, setCurrentTheme] = useState(themes.dark);
-
-  const toggleTheme = () => {
-    if (currentTheme === themes.dark) {
-      setCurrentTheme(themes.light);
-      return;
+  useEffect(() => {
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      handleLogin(JSON.parse(savedUser));
     }
-
-    setCurrentTheme(themes.dark);
-  };
+  }, []);
 
   return (
-    <AuthProvider>
-      <ThemeContext.Provider value={{ toggleTheme, theme: currentTheme }}>
-        <Routes>
-          <Route element={<ProtectedRoute />}>
-            <Route path="/" element={<PageLayout />}>
-              <Route index element={<Main />} />
-              <Route path="/favourites" element={<Favourites />} />
-              <Route path="/category/:id" element={<Category />} />
-            </Route>
-          </Route>
-          <Route path="/login" element={<AuthPage isLoginMode={true} />} />
-          <Route path="/register" element={<AuthPage />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </ThemeContext.Provider>
-    </AuthProvider>
-  );
-};
+    <Routes>
+      <Route
+        path="/login"
+        element={<Login onAuthButtonClick={user ? handleLogout : handleLogin}/>}
+      />
+
+      <Route path="/register" element={<Register />} />
+      <Route path="*" element={<NotFound />} />
+      <Route element={<ProtectedRoute isAllowed={Boolean(user)} />}>
+        <Route
+          path="/"
+          element={
+            <Main tracks={tracks} showSkeleton={showSkeleton} error={error}
+              user={user}
+              onAuthButtonClick={user ? handleLogout : handleLogin}
+            />
+          }
+        />
+        <Route path="*" element={<NotFound />} />
+        <Route path="/category/:id" element={<PlaylistPages onAuthButtonClick={user ? handleLogout : handleLogin}/>} />
+        <Route path="/favorites" element={<MyPlaylist showSkeleton={showSkeleton} error={error}
+              user={user}
+              onAuthButtonClick={user ? handleLogout : handleLogin}/>} />
+      </Route>
+    </Routes>
+  )
+}
