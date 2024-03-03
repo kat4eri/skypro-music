@@ -1,25 +1,50 @@
-import SidebarLogin from '../SidebarPersonal/SidebarPersonal'
-import { SidebarPlaylistAll } from '../SidebarPlaylist/SidebarPlaylist'
-import { SidebarPlaylistSkeletonAll } from '../SidebarPlaylistSkeleton/SidebarPlaylistSkeleton'
-// import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import * as S from './Sidebar.styles'
-// import {PlaylistPages} from '../../pages/category'
 
-function Sidebar({showSkeleton, onAuthButtonClick}) {
+export default function Sidebar({ isLoading }) {
   return (
     <S.MainSidebar>
-      <SidebarLogin onAuthButtonClick={onAuthButtonClick}/>
+      <S.SidebarPersonal>
+        <S.SidebarPersonalName>Anonym</S.SidebarPersonalName>
+        <S.SidebarIcon>
+          <svg alt="logout">
+            <use xlinkHref="img/icon/sprite.svg#logout" />
+          </svg>
+        </S.SidebarIcon>
+      </S.SidebarPersonal>
       <S.SidebarBlock>
         <S.SidebarList>
-          {showSkeleton ? (
-            <SidebarPlaylistSkeletonAll />
-          ) : (
-            <SidebarPlaylistAll />
-          )}
+          <SidebarItem
+            imgUrl="img/playlist01.png"
+            imgAlt={"day's playlist"}
+            isLoading={isLoading}
+            id={1}
+          />
+          <SidebarItem
+            imgUrl="img/playlist02.png"
+            imgAlt={"day's playlist"}
+            isLoading={isLoading}
+            id={2}
+          />
+          <SidebarItem
+            imgUrl="img/playlist03.png"
+            imgAlt={"day's playlist"}
+            isLoading={isLoading}
+            id={3}
+          />
         </S.SidebarList>
       </S.SidebarBlock>
     </S.MainSidebar>
   )
 }
 
-export default Sidebar
+function SidebarItem({ imgUrl, imgAlt, isLoading, id }) {
+  return (
+    <S.SidebarItem>
+      <Link to={`/category/${id}`}>
+        <S.SidebarImg src={imgUrl} alt={imgAlt} />
+      </Link>
+      {isLoading && <div className="skeleton" />}
+    </S.SidebarItem>
+  )
+}
