@@ -1,11 +1,17 @@
-function App() {
-  return (
-      <div className="App">
-          <header>
-              Здесь скоро будет Skypro.Music
-          </header>
-      </div>
-  );
-}
+import { AppRoutes } from './routes'
+import * as S from './App.styles'
 
-export default App;
+export default function App() {
+  return (
+    <>
+      <S.GlobalStyle />
+      <div className="App">
+        <S.Wrapper>
+          <S.Container>
+            <AppRoutes />
+          </S.Container>
+        </S.Wrapper>
+      </div>
+    </>
+  )
+}
