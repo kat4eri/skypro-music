@@ -1,31 +1,55 @@
-import MenuItem from '../MenuBurger/MenuBurger'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import * as S from './NavMenu.styles'
 
-function NavMenu() {
-  const [isMenuVisible, setMenuVisible] = useState(false)
-
-  const toggleMenu = () => {
-    setMenuVisible(!isMenuVisible)
-  }
+export const NavMenu = () => {
+  // Обработчик нажатия на бургер
+  const [showNavMenu, setShowNavMenu] = useState(false)
 
   return (
     <S.MainNav>
       <S.NavLogo>
-        <S.LogoImage src="../img/logo.png" alt="logo" />
+        <Link to="/">
+          <S.LogoImage src="img/logo.png" alt="logo" />
+        </Link>
       </S.NavLogo>
-      <S.NavBurger onClick={toggleMenu}>
+      <S.NavBurger
+        onClick={() => {
+          setShowNavMenu(!showNavMenu)
+        }}
+        type="button"
+      >
         <S.BurgerLine />
         <S.BurgerLine />
         <S.BurgerLine />
       </S.NavBurger>
-      <S.NavMenu className={`${isMenuVisible ? 'visible' : 'hidden'}`}>
-        <S.MenuList>
-          <MenuItem />
-        </S.MenuList>
-      </S.NavMenu>
+      {showNavMenu && (
+        <S.NavMenu>
+          <S.MenuList>
+            <S.MenuItem>
+              <Link to="/" style={S.MenuLink}>
+                Главное
+              </Link>
+            </S.MenuItem>
+            <S.MenuItem>
+              <Link to="/favorites" style={S.MenuLink}>
+                Мой плейлист
+              </Link>
+            </S.MenuItem>
+            <S.MenuItem>
+              <Link
+                to="/login"
+                onClick={() => {
+                  localStorage.removeItem('user')
+                }}
+                style={S.MenuLink}
+              >
+                Выйти
+              </Link>
+            </S.MenuItem>
+          </S.MenuList>
+        </S.NavMenu>
+      )}
     </S.MainNav>
   )
 }
-
-export default NavMenu
