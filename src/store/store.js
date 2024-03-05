@@ -1,9 +1,15 @@
-import { configureStore } from '@reduxjs/toolkit';
-import audioPlayerSlice from '../store/useAudioPlayer/AudioPlayer.slise';
+import { configureStore } from '@reduxjs/toolkit'
+import audioplayerReducer from './reducers/audioplayerReducers'
+import authReducer from './reducers/authReducer'
+import { tracksApi } from '../services/servicesApi'
 
 export const store = configureStore({
   reducer: {
-    audioPlayer: audioPlayerSlice,
+    audioplayer: audioplayerReducer,
+    auth: authReducer,
+    [tracksApi.reducerPath]: tracksApi.reducer,
   },
-  devTools: true,
-});
+
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(tracksApi.middleware),
+})
